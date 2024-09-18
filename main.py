@@ -4,15 +4,17 @@ from routes import user_routes, book_routes
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"], 
-    allow_headers=["*"],  
+    allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the FastAPI application!"}
 
 app.include_router(user_routes.router, prefix="/users", tags=["users"])
 app.include_router(book_routes.router, prefix="/books", tags=["books"])
