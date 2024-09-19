@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from models import User
 from schemas import UserCreate, User as UserSchema
 from database import get_db
-from auth import verify_password, get_password_hash, create_access_token
+from auth import verify_password,  create_access_token
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 router = APIRouter()
@@ -13,14 +13,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 @router.post("/", response_model=UserSchema)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     try:
-        # Verificar si el usuario ya existe
         db_user = db.query(User).filter(User.email == user.email).first()
         if db_user:
             raise HTTPException(status_code=400, detail="Email already registered")
 
-        # Crear un nuevo usuario
-        hashed_password = get_password_hash(user.password)
-        db_user = User(username=user.username, email=user.email, password_hash=hashed_password)
+        db_user = User(username=user.username, email=user.email, password_hash=user.password)
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
