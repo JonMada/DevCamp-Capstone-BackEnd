@@ -15,7 +15,6 @@ async def create_book(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    
     cover_image_bytes = await cover_image.read()
 
     db_book = Book(
