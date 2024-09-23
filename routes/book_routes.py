@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from models import Book, User
 from schemas import BookCreate, Book as BookSchema
@@ -10,21 +10,26 @@ router = APIRouter()
 
 @router.post("/", response_model=BookSchema)
 async def create_book(
-    book: BookCreate,
-    cover_image: UploadFile = File(...),  
+    title: str = Form(...),
+    author: str = Form(...),
+    year_published: Optional[int] = Form(None),
+    summary: Optional[str] = Form(None),
+    review: Optional[str] = Form(None),
+    rating: Optional[int] = Form(None),
+    cover_image: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     cover_image_bytes = await cover_image.read()
 
     db_book = Book(
-        title=book.title,
-        author=book.author,
-        year_published=book.year_published,
-        cover_image=cover_image_bytes,  
-        summary=book.summary,
-        review=book.review,
-        rating=book.rating,
+        title=title,
+        author=author,
+        year_published=year_published,
+        cover_image=cover_image_bytes,
+        summary=summary,
+        review=review,
+        rating=rating,
         owner_id=current_user.id
     )
     
