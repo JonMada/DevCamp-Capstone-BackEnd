@@ -20,7 +20,7 @@ class BookBase(BaseModel):
     title: str
     author: str
     year_published: Optional[int] = None
-    cover_image: Optional[str] = None
+    cover_image: Optional[str] = None 
     summary: Optional[str] = None
     review: Optional[str] = None
     rating: Optional[int] = None
@@ -38,7 +38,8 @@ class Book(BookBase):
 
     @classmethod
     def from_orm(cls, obj):
+        
         if obj.cover_image is not None:
             obj.cover_image = base64.b64encode(obj.cover_image).decode('utf-8')
-        return super().from_orm(obj)
-
+       
+        return super(Book, cls).from_orm(obj)
