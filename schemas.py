@@ -19,7 +19,7 @@ class BookBase(BaseModel):
     title: str
     author: str
     year_published: Optional[int] = None
-    cover_image: Optional[str] = None
+    cover_image: Optional[bytes] = None
     summary: Optional[str] = None
     review: Optional[str] = None
     rating: Optional[int] = None
