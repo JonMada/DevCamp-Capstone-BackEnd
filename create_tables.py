@@ -25,7 +25,7 @@ class Book(Base):
     title = Column(String(255), nullable=False)
     author = Column(String(255), nullable=False)
     year_published = Column(Integer)
-    cover_image = Column(Text)
+    cover_image =  Column(Text)
     summary = Column(Text)
     review = Column(Text)
     rating = Column(Integer)
