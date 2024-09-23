@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from typing import List
 from sqlalchemy.orm import Session
 from models import Book, User
@@ -9,12 +9,28 @@ from auth import get_current_user
 router = APIRouter()
 
 @router.post("/", response_model=BookSchema)
-def create_book(book: BookCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_book = Book(**book.dict(), owner_id=current_user.id)
+def create_book(
+    book: BookCreate,
+    cover_image: bytes = File(...), 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    db_book = Book(
+        title=book.title,
+        author=book.author,
+        year_published=book.year,
+        cover_image=cover_image, 
+        summary=book.summary,
+        review=book.review,
+        rating=book.rating,
+        owner_id=current_user.id
+    )
+    
     db.add(db_book)
     db.commit()
     db.refresh(db_book)
     return db_book
+
 
 @router.get("/", response_model=List[BookSchema])
 def get_books(db: Session = Depends(get_db)):
