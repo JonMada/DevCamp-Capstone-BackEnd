@@ -20,7 +20,10 @@ async def create_book(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    
+    print(f"Received book data: title={title}, author={author}, year={year_published}, summary={summary}, review={review}, rating={rating}")
     cover_image_bytes = await cover_image.read()
+    print(f"Cover image size: {len(cover_image_bytes)} bytes")
 
     db_book = Book(
         title=title,
