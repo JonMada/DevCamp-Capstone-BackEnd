@@ -9,7 +9,7 @@ services:
     start_command: |
       uvicorn main:app --host 0.0.0.0 --port 10000
     env_vars:
-      DATABASE_URL: "postgresql://etxelit_db_nyvn_user:xLDsYlBjYQUch6XmvQKobV81BtwNs85Z@dpg-cromkfpu0jms73cbpku0-a.oregon-postgres.render.com/etxelit_db_nyvn"
+      DATABASE_URL: "postgresql://etxelit_db_6ub8_user:ARzv3XsYrsP4SEfIbvWrCFNbvsJJmlyz@dpg-cromr39u0jms73cbth30-a.oregon-postgres.render.com/etxelit_db_6ub8"
     regions:
       - us-east-1
     health_check_path: /health
