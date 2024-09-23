@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-import base64
+
 
 class UserBase(BaseModel):
     username: str
@@ -22,7 +22,7 @@ class BookBase(BaseModel):
     title: str
     author: str
     year_published: Optional[int] = None
-    cover_image: Optional[str] = None 
+    cover_image: str  
     summary: Optional[str] = None
     review: Optional[str] = None
     rating: Optional[int] = None
