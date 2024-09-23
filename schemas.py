@@ -36,14 +36,4 @@ class Book(BookBase):
 
     class Config:
         orm_mode = True
-        from_attributes = True
-
-    @classmethod
-    def from_orm(cls, obj):
-        obj_dict = obj.__dict__.copy()
-
-        if obj.cover_image is not None and isinstance(obj.cover_image, bytes):
-            
-            obj_dict['cover_image'] = base64.b64encode(obj.cover_image).decode('utf-8')
-
-        return super(Book, cls).parse_obj(obj_dict)
+   

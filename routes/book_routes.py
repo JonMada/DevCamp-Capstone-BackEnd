@@ -11,27 +11,21 @@ router = APIRouter()
 
 @router.post("/", response_model=BookSchema)
 async def create_book(
-    title: str = Form(...),
-    author: str = Form(...),
-    year_published: Optional[int] = Form(None),
-    summary: Optional[str] = Form(None),
-    review: Optional[str] = Form(None),
-    rating: Optional[int] = Form(None),
-    cover_image: str = Form(...),  
+    book: BookCreate, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     db_book = Book(
-        title=title,
-        author=author,
-        year_published=year_published,
-        cover_image=cover_image,
-        summary= summary,
-        review= review,
-        rating= rating,
-        owner_id= current_user.id
+        title=book.title,
+        author=book.author,
+        year_published=book.year_published,
+        cover_image=book.cover_image,
+        summary=book.summary,
+        review=book.review,
+        rating=book.rating,
+        owner_id=current_user.id
     )
-    
+
     db.add(db_book)
     db.commit()
     db.refresh(db_book)
