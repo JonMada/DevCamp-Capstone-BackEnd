@@ -20,7 +20,7 @@ class BookBase(BaseModel):
     title: str
     author: str
     year_published: Optional[int] = None
-    cover_image: Optional[str] = None 
+    cover_image: Optional[str] = None  # Este campo se convertirá a base64
     summary: Optional[str] = None
     review: Optional[str] = None
     rating: Optional[int] = None
@@ -38,8 +38,15 @@ class Book(BookBase):
 
     @classmethod
     def from_orm(cls, obj):
-        
+        cover_image_base64 = None
         if obj.cover_image is not None:
-            obj.cover_image = base64.b64encode(obj.cover_image).decode('utf-8')
-       
+            try:
+                cover_image_base64 = base64.b64encode(obj.cover_image).decode('utf-8')
+            except Exception as e:
+                print(f"Error base64: {e}")
+
+
+        obj_dict = obj.__dict__
+
+        obj_dict['cover_image'] = cover_image_base64
         return super(Book, cls).from_orm(obj)
