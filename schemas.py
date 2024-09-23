@@ -16,11 +16,13 @@ class User(UserBase):
         orm_mode = True
         from_attributes = True
 
+
+
 class BookBase(BaseModel):
     title: str
     author: str
     year_published: Optional[int] = None
-    cover_image: Optional[str] = None  # Aquí debemos asegurarnos que sea siempre una cadena
+    cover_image: Optional[str] = None 
     summary: Optional[str] = None
     review: Optional[str] = None
     rating: Optional[int] = None
@@ -38,17 +40,10 @@ class Book(BookBase):
 
     @classmethod
     def from_orm(cls, obj):
-        
         obj_dict = obj.__dict__.copy()
 
+        if obj.cover_image is not None and isinstance(obj.cover_image, bytes):
+            
+            obj_dict['cover_image'] = base64.b64encode(obj.cover_image).decode('utf-8')
 
-        if obj.cover_image is not None:
-            try:
-               
-                obj_dict['cover_image'] = base64.b64encode(obj.cover_image).decode('utf-8')
-            except Exception as e:
-                print(f"Error al convertir la imagen a base64: {e}")
-                obj_dict['cover_image'] = None
-
-       
         return super(Book, cls).parse_obj(obj_dict)

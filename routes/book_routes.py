@@ -5,6 +5,7 @@ from models import Book, User
 from schemas import BookCreate, Book as BookSchema
 from database import get_db
 from auth import get_current_user
+import base64
 
 router = APIRouter()
 
@@ -16,20 +17,24 @@ async def create_book(
     summary: Optional[str] = Form(None),
     review: Optional[str] = Form(None),
     rating: Optional[int] = Form(None),
-    cover_image: UploadFile = File(...),
+    cover_image: UploadFile = File(...),  
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    
     print(f"Received book data: title={title}, author={author}, year={year_published}, summary={summary}, review={review}, rating={rating}")
+    
     cover_image_bytes = await cover_image.read()
     print(f"Cover image size: {len(cover_image_bytes)} bytes")
+    
+   
+    cover_image_base64 = base64.b64encode(cover_image_bytes).decode('utf-8')
 
+   
     db_book = Book(
         title=title,
         author=author,
         year_published=year_published,
-        cover_image=cover_image_bytes,
+        cover_image=cover_image_base64, 
         summary=summary,
         review=review,
         rating=rating,
@@ -40,7 +45,6 @@ async def create_book(
     db.commit()
     db.refresh(db_book)
     return db_book
-
 
 @router.get("/", response_model=List[BookSchema])
 def get_books(db: Session = Depends(get_db)):
