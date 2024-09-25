@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 
 
-DATABASE_URL = "postgresql://etxelit_db_6ub8_user:ARzv3XsYrsP4SEfIbvWrCFNbvsJJmlyz@dpg-cromr39u0jms73cbth30-a.oregon-postgres.render.com/etxelit_db_6ub8"
+DATABASE_URL = "postgresql://etxelit_database_user:XxqZe7wJxhv6SnWHhnv4UQsyVbDJJN3R@dpg-crq77dqj1k6c738cce50-a.oregon-postgres.render.com/etxelit_database"
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
