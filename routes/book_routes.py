@@ -55,12 +55,30 @@ def read_book(book_id: int, db: Session = Depends(get_db)):
     return book
 
 @router.put("/{book_id}", response_model=BookSchema)
-def update_book(book_id: int, book: BookCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+async def update_book(
+    book_id: int,
+    title: str = Form(...),
+    author: str = Form(...),
+    year_published: int = Form(None),
+    summary: str = Form(None),
+    review: str = Form(None),
+    rating: int = Form(None),
+    cover_image: str = Form(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     db_book = db.query(Book).filter(Book.id == book_id, Book.owner_id == current_user.id).first()
     if not db_book:
         raise HTTPException(status_code=404, detail="Book not found")
-    for key, value in book.dict().items():
-        setattr(db_book, key, value)
+    
+    db_book.title = title
+    db_book.author = author
+    db_book.year_published = year_published
+    db_book.summary = summary
+    db_book.review = review
+    db_book.rating = rating
+    db_book.cover_image = cover_image
+
     db.commit()
     db.refresh(db_book)
     return db_book

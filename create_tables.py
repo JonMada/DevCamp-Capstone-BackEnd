@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.orm import sessionmaker
 
 
-DATABASE_URL = "postgresql://etxelit_db_user:6o3QBA70ph1xhIf2169I7C8n01xdDOZP@dpg-crlfv4t6l47c7382a8ag-a.oregon-postgres.render.com/etxelit_db"
+DATABASE_URL = "postgresql://etxelit_db_6ub8_user:ARzv3XsYrsP4SEfIbvWrCFNbvsJJmlyz@dpg-cromr39u0jms73cbth30-a.oregon-postgres.render.com/etxelit_db_6ub8"
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
@@ -25,7 +25,7 @@ class Book(Base):
     title = Column(String(255), nullable=False)
     author = Column(String(255), nullable=False)
     year_published = Column(Integer)
-    cover_image =  Column(Text)
+    cover_image = Column (String(255))
     summary = Column(Text)
     review = Column(Text)
     rating = Column(Integer)
